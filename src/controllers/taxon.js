@@ -26,6 +26,25 @@ exports.create = async (req, res) => {
     const { scientific_name, common_name, taxonomy_id } = req.body;
 
     // Put your code here
+    if (!scientific_name || !common_name || !taxonomy_id) {
+        return res.sendStatus(400);
+    }
+
+    const existingTaxon = taxons.find((t) => t.taxonomy_id === taxonomy_id);
+
+    if (existingTaxon) {
+        return res.sendStatus(409);
+    }
+
+    const newTaxon = {
+        scientific_name,
+        common_name,
+        taxonomy_id,
+    };
+
+    taxons.push(newTaxon);
+
+    res.status(201).json(newTaxon);
 };
 
 exports.update = async (req, res) => {
