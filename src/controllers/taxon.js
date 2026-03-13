@@ -52,10 +52,42 @@ exports.update = async (req, res) => {
     const { scientific_name, common_name } = req.body;
 
     // Put your code here
+
+    if (!id) {
+        return res.sendStatus(400);
+    }
+
+    if (!scientific_name || !common_name) {
+        return res.sendStatus(400);
+    }
+
+    const taxon = taxons.find((t) => t.taxonomy_id === id);
+
+    if (!taxon) {
+        return res.sendStatus(204);
+    }
+
+    taxon.scientific_name = scientific_name;
+    taxon.common_name = common_name;
+
+    res.status(200).json(taxon);
 };
 
 exports.delete = async (req, res) => {
     const { id } = req.params;
 
     // Put your code here
+    if (!id) {
+        return res.sendStatus(400);
+    }
+
+    const index = taxons.findIndex((t) => t.taxonomy_id === id);
+
+    if (index === -1) {
+        return res.sendStatus(204);
+    }
+
+    const deletedTaxon = taxons.splice(index, 1)[0];
+
+    res.status(200).json(deletedTaxon);
 };

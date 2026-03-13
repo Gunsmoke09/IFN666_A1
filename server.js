@@ -2,6 +2,7 @@ const express = require("express");
 
 // Put your code here
 const apiRouter = require("./src/routes/index");
+const mediaTypeValidator = require("./src/middleware/mediaTypeValidator");
 
 const app = express();
 
@@ -12,6 +13,7 @@ const port = 3000;
 
 // Put your code here
 
+app.use(mediaTypeValidator);
 app.use("/api", apiRouter);
 
 app.get("/", (req, res) => {
